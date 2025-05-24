@@ -27,8 +27,14 @@ int load_accounts(const char *filename, User **user, const char, int *counter)
     User var;
     while(fscanf(f, "%s %lf %s", var.account_number, &var.current_balance, var.id)==3)
     {
-        user = realloc(*user,sizeof(User)*(*counter+1))
-        (*user)[*counter] = var;
+        User *new_array = realloc(*user,(*counter+1)*sizeof(User));
+        if(!new_array) 
+        {
+            fclose(f);
+            return 0;
+        }
+        *user = new_array;
+        (*user)[*counter] = temp;
         (*counter)++;
     }
     fclose(f);
@@ -36,15 +42,17 @@ int load_accounts(const char *filename, User **user, const char, int *counter)
 }
 
 
-int save_accounts(const char filename, User *user, const char, int *counter)
+int save_accounts(const char *filename, User *user, int counter)
 {
     FILE *f = fopen(filename, "w");
-    if(!f)
+    if(!f) 
     {
         return 0;
     }
-    for(int i=0; i<counter; i++)
+    for(int i=0;i<counter;i++) 
     {
-        fprintf(f,"%s %.2f %s\n", user[i].account_number, user[i].current_balance, user[i].id);
+        fprintf(f, "%s %.2f %s\n",user[i].account_number,user[i].current_balance,user[i].id);
     }
+    fclose(f);
+    return 1;
 }
