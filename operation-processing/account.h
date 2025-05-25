@@ -1,15 +1,15 @@
-#ifndef USER_H
-#define USER_H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
-typedef struct user{
+typedef struct account{
     char account_number[10];
     double current_balance;
     char id[50];
-}User;
+}Account;
 
-int find_account_by_index(User *user, int counter, const char *unique);
-int load_accounts(const char *filename, User **user, const char, int *counter);
-int save_accounts(const char *filename, User *user, const char, int counter);
+int find_account_by_index(User *account, int counter, const char *unique);
+int load_accounts(const char *filename, User **account, const char, int *counter);
+int save_accounts(const char *filename, User *account, const char, int counter);
 
 
 #endif 
