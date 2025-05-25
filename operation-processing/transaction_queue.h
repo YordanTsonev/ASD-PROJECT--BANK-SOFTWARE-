@@ -4,7 +4,7 @@ typedef struct transaction{
     int from_id;
     int to_id;
     double amount;
-    struct Transaction *next;
+    struct transaction *next;
 }Transaction;
 
 void enqueue_transaction(int from_id,int to_id, double amount);

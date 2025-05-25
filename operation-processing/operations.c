@@ -52,7 +52,7 @@ static int update_balance(sqlite3 *db, int user_id, double new_balance)
 {
     sqlite3_stmt *stmt;
     const char *sql = "UPDATE users SET balance = ? WHERE id = ?";
-    if(sqlite3_prepare_v2(db,sql,-1,&stmt,NULL)! SQLITE_OK)return 0;
+    if(sqlite3_prepare_v2(db,sql,-1,&stmt,NULL)!=SQLITE_OK)return 0;
     sqlite3_bind_double(stmt,1,new_balance);
     sqlite3_bind_int(stmt,2,user_id);
     int result = sqlite3_step(stmt) == SQLITE_DONE;

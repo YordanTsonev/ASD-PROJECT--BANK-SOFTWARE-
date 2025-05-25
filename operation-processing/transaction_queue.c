@@ -25,7 +25,7 @@ void enqueue_transaction(int from_id, int to_id, double amount)
 void print_transaction_queue(void) 
 {
     Transaction *current = head;
-    while(currrent) 
+    while(current) 
     {
         printf("Transfer:%d->%d | %.2f lv.\n",current->from_id, current->to_id, current->amount);
         current = current->next;
@@ -34,11 +34,11 @@ void print_transaction_queue(void)
 
 void clear_transaction_queue(void) 
 {
-    Transaction *currrent = head;
-    while(currrent) 
+    Transaction *current = head;
+    while(current) 
     {
-        Transaction *temp = currrent;
-        currrent = currrent->next;
+        Transaction *temp = current;
+        current = current->next;
         free(temp);
     }
     head = NULL;
