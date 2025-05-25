@@ -34,7 +34,7 @@ int load_accounts(const char *filename, Account **account, const char, int *coun
             return 0;
         }
         *account = new_array;
-        (*account)[*counter] = temp;
+        (*account)[*counter] = var;
         (*counter)++;
     }
     fclose(f);

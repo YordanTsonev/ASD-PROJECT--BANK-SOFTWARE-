@@ -7,9 +7,9 @@ typedef struct account{
     char id[50];
 }Account;
 
-int find_account_by_index(User *account, int counter, const char *unique);
-int load_accounts(const char *filename, User **account, const char, int *counter);
-int save_accounts(const char *filename, User *account, const char, int counter);
+int find_account_by_index(Account *account, int counter, const char *unique);
+int load_accounts(const char *filename, Account **account, const char, int *counter);
+int save_accounts(const char *filename, Account *account, const char, int counter);
 
 
 #endif 
