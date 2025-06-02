@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_INPUT 256
-
 int main() {
     HashMap* map = createHashMap(100);
     UserList* users = createUserList();
+    AccountList* accounts = createAccountList();
+    TransactionQueue* transactionQueue = createTransactionQueue();
+
+    loadUsersFromFile(map, users, "users.txt");
+    loadAccountsFromFile(accounts, "accounts.txt");
+    loadTransactionsFromFile(transactionQueue, "transactions.txt");
 
     char username[MAX_INPUT];
     char password[MAX_INPUT];
@@ -49,19 +53,19 @@ int main() {
                         switch (action) {
                             case 1:
                                 printf("Deposit selected.\n");
-                                
+                                refreshAccountFile(accounts, "accounts.txt");
                                 break;
                             case 2:
                                 printf("Withdraw selected.\n");
-                                
+                                refreshAccountFile(accounts, "accounts.txt");
                                 break;
                             case 3:
                                 printf("Transfer selected.\n");
-                                
+                                refreshAccountFile(accounts, "accounts.txt");
                                 break;
                             case 4:
                                 printf("View Transactions selected.\n");
-                                
+                                refreshTransactionFile(transactionQueue, "transactions.txt");
                                 break;
                             case 5:
                                 printf("Logging out...\n");

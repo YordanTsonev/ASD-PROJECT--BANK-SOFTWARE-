@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 
+#define MAX_INPUT 256
+#define LINE_LENGTH 1024
+#define ACCOUNT_NUMBER_LENGTH 16
+
 typedef struct EntryNode {
     char* key;
     char* value;
@@ -89,11 +93,17 @@ void freeAccountList(AccountList* list);
 void freeTransaction(Transaction* transaction);
 void freeTransactionQueue(TransactionQueue* queue);
 
-void writeUsersToFile(UserNode* user, FILE* file);
-void writeAccountsToFile(AccountNode* account, FILE* file);
-void writeTransactionsToFile(Transaction* transaction, FILE* file);
-
-void registerUser(HashMap* map, UserList* users, char* username, char* password);
+void registerUser(HashMap* map, UserList* users, AccountList* accounts, char* username, char* password, const char* filenameUsers, const char* filenameAccounts);
 int loginUser(HashMap* map, UserList* users, char* username, char* password);
+void transfer(char* fromAccount, char* toAccount, double amount, AccountList* accounts, TransactionQueue* queue);
+void executeTransaction(TransactionQueue* queue, AccountList* accounts);
+
+void loadUsersFromFile(HashMap* map, UserList* users, const char* filename);
+void loadAccountsFromFile(AccountList* accounts, const char* filename);
+void loadTransactionsFromFile(TransactionQueue* queue, const char* filename);
+
+void refreshUserFile(UserList* users, const char* filename);
+void refreshAccountFile(AccountList* accounts, const char* filename);
+void refreshTransactionFile(TransactionQueue* queue, const char* filename);
 
 #endif
