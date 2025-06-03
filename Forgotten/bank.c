@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <math.h>
 
 static void handleMemoryError() {
     printf("Memory allocation failed\n");
@@ -576,6 +577,59 @@ void executeTransaction(TransactionQueue* queue, AccountList* accounts) {
     }
 }
 
+static int isValidAmount(double amount) 
+{
+    return amount>0&&fabs(amount*100 - round(amount*100))<0.001;
+}
+
+void deposit(AccountList* accounts, int userId, double amount) 
+{
+    if(!isValidAmount(amount)) 
+    {
+        printf("Invalid amount for deposit\n");
+        return;
+    }
+    AccountNode *current = accounts->head;
+    while(current!=NULL) 
+    {
+        if(current->account.userId == userId) 
+        {
+            current->account.balance += amount;
+            printf("Successful deposit of %.2f lv. The new balance is: %.2f lv\n", amount,current->account.balance);
+            return;
+        }
+        current = current->next;
+    }
+
+    printf("Account with ID %d wasn't found\n", userId);
+}
+
+void withdraw(AccountList* accounts, int userId, double amount) 
+{
+    if(!isValidAmount(amount)) 
+    {
+        printf("Invalid amount for deposit\n");
+        return;
+    }
+    AccountNode* current = accounts->head;
+    while(current != NULL) 
+    {
+        if(current->account.userId == userId) 
+        {
+            if(current->account.balance < amount) 
+            {
+                printf("You don't have this amount of money. The balance is: %.2f lv.\n",current->account.balance);
+                return;
+            }
+            current->account.balance = current->account.balance - amount;
+            printf("Successful withdraw of %.2f lv. The new balance is: %.2f lv\n",amount,current->account.balance);
+            return;
+        }
+        current = current->next;
+    }
+    printf("Account with ID %d wasn't found\n",userId);
+}
+
 void loadUsersFromFile(HashMap* map, UserList* users, const char* filename) {
     if (filename && strlen(filename) > 0) {
         FILE* usersFile = fopen(filename, "r");
@@ -734,4 +788,18 @@ void refreshTransactionFile(TransactionQueue* queue, const char* filename) {
     } else {
         printf("Error writing to transactions file\n");
     }
+
+int getUserIdByUsername(UserList* users, const char* username) 
+{
+    UserNode* current = users->head;
+    while(current != NULL) 
+    {
+        if(strcmp(current->user.username, username) == 0) 
+        {
+            return current->user.id;
+        }
+        current = current->next;
+    }
+    return -1; 
+}
 }

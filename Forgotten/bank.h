@@ -106,4 +106,9 @@ void refreshUserFile(UserList* users, const char* filename);
 void refreshAccountFile(AccountList* accounts, const char* filename);
 void refreshTransactionFile(TransactionQueue* queue, const char* filename);
 
+void deposit(AccountList* accounts, int userId, double amount);
+void withdraw(AccountList* accounts, int userId, double amount);
+int getUserIdByUsername(UserList* users, const char* username);
+
+
 #endif

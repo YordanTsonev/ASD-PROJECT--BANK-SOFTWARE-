@@ -1,4 +1,5 @@
 #include "bank.h"
+#include "bank.c"
 #include <stdlib.h>
 #include <string.h>
 
@@ -37,7 +38,9 @@ int main() {
                 password[strcspn(password, "\n")] = '\0';
 
                 if (loginUser(map, users, username, password)) {
+                    int userId = getUserIdByUsername(users, username);
                     int action;
+                    double amount;
                     do {
                         printf("\nWelcome, %s!\n", username);
                         printf("Choose an action:\n");
@@ -52,20 +55,54 @@ int main() {
 
                         switch (action) {
                             case 1:
-                                printf("Deposit selected.\n");
-                                refreshAccountFile(accounts, "accounts.txt");
+                                printf("Enter amount to deposit: ");
+                                scanf("%lf",&amount);
+                                getchar();
+                                deposit(accounts,userId,amount);
+                                refreshAccountFile(accounts,"accounts.txt");
                                 break;
                             case 2:
-                                printf("Withdraw selected.\n");
+                                printf("Enter amount to withdraw: ");
+                                scanf("%lf",&amount);
+                                getchar();
+                                withdraw(accounts, userId, amount);
                                 refreshAccountFile(accounts, "accounts.txt");
                                 break;
                             case 3:
-                                printf("Transfer selected.\n");
-                                refreshAccountFile(accounts, "accounts.txt");
+                               char toAccount[ACCOUNT_NUMBER_LENGTH+1];
+                                double amount;
+                                printf("Enter addressee account number: ");
+                                fgets(toAccount,ACCOUNT_NUMBER_LENGTH + 1,stdin);
+                                toAccount[strcspn(toAccount,"\n")] = '\0';
+                                getchar();
+                                printf("Enter amount to transfer: ");
+                                scanf("%lf",&amount);
+                                getchar();
+                                AccountNode* current = accounts->head;
+                                char* fromAccount = NULL;
+                                while(current!=NULL) 
+                                {
+                                    if(current->account.userId == userId) 
+                                    {
+                                        fromAccount = current->account.accountNumber;
+                                        break;
+                                    }
+                                    current = current->next;
+                                }
+                                if (fromAccount) 
+                                {
+                                    transfer(fromAccount,toAccount,amount,accounts,transactionQueue);
+                                    refreshTransactionFile(transactionQueue,"transactions.txt");
+                                } 
+                                else 
+                                {
+                                    printf("Your account was not found\n");
+                                }
                                 break;
+                            
                             case 4:
-                                printf("View Transactions selected.\n");
-                                refreshTransactionFile(transactionQueue, "transactions.txt");
+                                executeTransaction(transactionQueue,accounts);
+                                refreshAccountFile(accounts,"accounts.txt");
                                 break;
                             case 5:
                                 printf("Logging out...\n");
@@ -75,7 +112,9 @@ int main() {
                                 break;
                         }
                     } while (action != 5);
-                } else {
+                } 
+                else 
+                {
                     printf("Login failed.\n");
                 }
                 break;
@@ -90,14 +129,19 @@ int main() {
                 fgets(password, MAX_INPUT, stdin);
                 password[strcspn(password, "\n")] = '\0';
 
-                registerUser(map, users, username, password);
+                registerUser(map, users, accounts, username, password, "users.txt", "accounts.txt");
                 break;
 
             case 3:
-                printf("Exiting...\n");
+                printf("Exiting the program...\n");
+                refreshAccountFile(accounts,"accounts.txt");
+                refreshUserFile(users,"users.txt");
+                refreshTransactionFile(transactionQueue,"transactions.txt");
                 freeHashMap(map);
                 freeUserList(users);
-                exit(0);
+                freeAccountList(accounts);
+                freeTransactionQueue(transactionQueue);
+                return 0;
 
             default:
                 printf("Invalid choice. Please try again.\n");
