@@ -532,7 +532,7 @@ void transfer(char* fromAccount, char* toAccount, double amount, AccountList* ac
     refreshTransactionFile(queue, filename);
 }
 
-void executeTransaction(TransactionQueue* queue, AccountList* accounts) {
+void executeTransaction(TransactionQueue* queue, AccountList* accounts, const char* filename) {
     if (queue->front == NULL) {
         printf("No transactions to execute\n");
         return;
@@ -570,6 +570,7 @@ void executeTransaction(TransactionQueue* queue, AccountList* accounts) {
             toAccountNode->account.balance += transaction->amount;
 
             printf("Executed transaction: %.2f from '%s' to '%s'\n", transaction->amount, transaction->fromAccount, transaction->toAccount);
+            refreshTransactionFile(queue, filename);
         } else {
             printf("Transaction failed: one or both accounts not found.\n");
         }

@@ -47,7 +47,7 @@ int main() {
                         printf("1. Deposit\n");
                         printf("2. Withdraw\n");
                         printf("3. Transfer\n");
-                        printf("4. View Transactions\n");
+                        printf("4. Execute Transactions\n");
                         printf("5. Logout\n");
                         printf("Choice: ");
                         scanf("%d", &action);
@@ -96,7 +96,7 @@ int main() {
                                 break;
                             
                             case 4:
-                                executeTransaction(transactionQueue,accounts);
+                                executeTransaction(transactionQueue, accounts, "transactions.txt");
                                 break;
                             case 5:
                                 printf("Logging out...\n");
