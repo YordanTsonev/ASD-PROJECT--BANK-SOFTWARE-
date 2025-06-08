@@ -488,7 +488,7 @@ int loginUser(HashMap* map, UserList* users, char* username, char* password) {
     return 0;
 }
 
-void transfer(char* fromAccount, char* toAccount, double amount, AccountList* accounts, TransactionQueue* queue) {
+void transfer(char* fromAccount, char* toAccount, double amount, AccountList* accounts, TransactionQueue* queue, const char* filename) {
     if (amount <= 0) {
         printf("Invalid amount! Must be a positive number!\n");
         return;
@@ -529,6 +529,7 @@ void transfer(char* fromAccount, char* toAccount, double amount, AccountList* ac
 
     enqueue(queue, transaction);
     printf("Transaction added to queue: %.2f from '%s' to '%s'\n", amount, fromAccount, toAccount);
+    refreshTransactionFile(queue, filename);
 }
 
 void executeTransaction(TransactionQueue* queue, AccountList* accounts) {
@@ -582,7 +583,7 @@ static int isValidAmount(double amount)
     return amount>0&&fabs(amount*100 - round(amount*100))<0.001;
 }
 
-void deposit(AccountList* accounts, int userId, double amount) 
+void deposit(AccountList* accounts, int userId, double amount, const char* filename) 
 {
     if(!isValidAmount(amount)) 
     {
@@ -596,6 +597,7 @@ void deposit(AccountList* accounts, int userId, double amount)
         {
             current->account.balance += amount;
             printf("Successful deposit of %.2f lv. The new balance is: %.2f lv\n", amount,current->account.balance);
+            refreshAccountFile(accounts, filename);
             return;
         }
         current = current->next;
@@ -604,7 +606,7 @@ void deposit(AccountList* accounts, int userId, double amount)
     printf("Account with ID %d wasn't found\n", userId);
 }
 
-void withdraw(AccountList* accounts, int userId, double amount) 
+void withdraw(AccountList* accounts, int userId, double amount, const char* filename) 
 {
     if(!isValidAmount(amount)) 
     {
@@ -623,6 +625,7 @@ void withdraw(AccountList* accounts, int userId, double amount)
             }
             current->account.balance = current->account.balance - amount;
             printf("Successful withdraw of %.2f lv. The new balance is: %.2f lv\n",amount,current->account.balance);
+            refreshAccountFile(accounts, filename);
             return;
         }
         current = current->next;
@@ -788,9 +791,9 @@ void refreshTransactionFile(TransactionQueue* queue, const char* filename) {
     } else {
         printf("Error writing to transactions file\n");
     }
+}
 
-int getUserIdByUsername(UserList* users, const char* username) 
-{
+int getUserIdByUsername(UserList* users, const char* username) {
     UserNode* current = users->head;
     while(current != NULL) 
     {
@@ -801,5 +804,4 @@ int getUserIdByUsername(UserList* users, const char* username)
         current = current->next;
     }
     return -1; 
-}
 }

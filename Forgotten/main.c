@@ -1,5 +1,4 @@
 #include "bank.h"
-#include "bank.c"
 #include <stdlib.h>
 #include <string.h>
 
@@ -40,6 +39,7 @@ int main() {
                 if (loginUser(map, users, username, password)) {
                     int userId = getUserIdByUsername(users, username);
                     int action;
+                    char toAccount[ACCOUNT_NUMBER_LENGTH + 1];
                     double amount;
                     do {
                         printf("\nWelcome, %s!\n", username);
@@ -58,19 +58,15 @@ int main() {
                                 printf("Enter amount to deposit: ");
                                 scanf("%lf",&amount);
                                 getchar();
-                                deposit(accounts,userId,amount);
-                                refreshAccountFile(accounts,"accounts.txt");
+                                deposit(accounts, userId, amount, "accounts.txt");
                                 break;
                             case 2:
                                 printf("Enter amount to withdraw: ");
                                 scanf("%lf",&amount);
                                 getchar();
-                                withdraw(accounts, userId, amount);
-                                refreshAccountFile(accounts, "accounts.txt");
+                                withdraw(accounts, userId, amount, "accounts.txt");
                                 break;
                             case 3:
-                               char toAccount[ACCOUNT_NUMBER_LENGTH+1];
-                                double amount;
                                 printf("Enter addressee account number: ");
                                 fgets(toAccount,ACCOUNT_NUMBER_LENGTH + 1,stdin);
                                 toAccount[strcspn(toAccount,"\n")] = '\0';
@@ -91,8 +87,7 @@ int main() {
                                 }
                                 if (fromAccount) 
                                 {
-                                    transfer(fromAccount,toAccount,amount,accounts,transactionQueue);
-                                    refreshTransactionFile(transactionQueue,"transactions.txt");
+                                    transfer(fromAccount, toAccount, amount, accounts, transactionQueue, "transactions.txt");
                                 } 
                                 else 
                                 {
@@ -102,7 +97,6 @@ int main() {
                             
                             case 4:
                                 executeTransaction(transactionQueue,accounts);
-                                refreshAccountFile(accounts,"accounts.txt");
                                 break;
                             case 5:
                                 printf("Logging out...\n");
