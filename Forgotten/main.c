@@ -97,7 +97,7 @@ int main() {
                                 break;
                             
                             case 4:
-                                executeTransaction(transactionQueue, accounts, "transactions.txt");
+                                executeTransaction(transactionQueue, accounts, "transactions.txt", "accounts.txt");
                                 break;
                             case 5:
                                 viewTransactions(transactionQueue);
