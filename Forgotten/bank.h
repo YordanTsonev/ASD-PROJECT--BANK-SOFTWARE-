@@ -96,7 +96,7 @@ void freeTransactionQueue(TransactionQueue* queue);
 void registerUser(HashMap* map, UserList* users, AccountList* accounts, char* username, char* password, const char* filenameUsers, const char* filenameAccounts);
 int loginUser(HashMap* map, UserList* users, char* username, char* password);
 void transfer(char* fromAccount, char* toAccount, double amount, AccountList* accounts, TransactionQueue* queue, const char* filename);
-void executeTransaction(TransactionQueue* queue, AccountList* accounts, const char* filename);
+void executeTransaction(TransactionQueue* queue, AccountList* accounts, const char* Tfilename, const char* Afilename);
 void viewTransactions(TransactionQueue* queue);
 
 void loadUsersFromFile(HashMap* map, UserList* users, const char* filename);
