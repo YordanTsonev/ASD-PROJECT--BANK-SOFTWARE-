@@ -579,6 +579,20 @@ void executeTransaction(TransactionQueue* queue, AccountList* accounts, const ch
     }
 }
 
+void viewTransactions(TransactionQueue* queue) {
+    if (queue->front == NULL) {
+        printf("No transactions available\n");
+        return;
+    }
+
+    Transaction* current = queue->front;
+    while (current != NULL) {
+        printf("Operation: %s, Amount: %.2f, From: %s, To: %s\n",
+               current->operationCode, current->amount, current->fromAccount, current->toAccount);
+        current = current->next;
+    }
+}
+
 static int isValidAmount(double amount) 
 {
     return amount>0&&fabs(amount*100 - round(amount*100))<0.001;

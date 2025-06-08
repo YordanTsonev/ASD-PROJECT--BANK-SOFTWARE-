@@ -48,7 +48,8 @@ int main() {
                         printf("2. Withdraw\n");
                         printf("3. Transfer\n");
                         printf("4. Execute Transactions\n");
-                        printf("5. Logout\n");
+                        printf("5. View Transactions\n");
+                        printf("6. Logout\n");
                         printf("Choice: ");
                         scanf("%d", &action);
                         getchar();
@@ -99,13 +100,16 @@ int main() {
                                 executeTransaction(transactionQueue, accounts, "transactions.txt");
                                 break;
                             case 5:
+                                viewTransactions(transactionQueue);
+                                break;
+                            case 6:
                                 printf("Logging out...\n");
                                 break;
                             default:
                                 printf("Invalid action. Try again.\n");
                                 break;
                         }
-                    } while (action != 5);
+                    } while (action != 6);
                 } 
                 else 
                 {

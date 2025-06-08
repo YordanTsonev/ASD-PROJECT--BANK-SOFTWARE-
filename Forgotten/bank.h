@@ -97,6 +97,7 @@ void registerUser(HashMap* map, UserList* users, AccountList* accounts, char* us
 int loginUser(HashMap* map, UserList* users, char* username, char* password);
 void transfer(char* fromAccount, char* toAccount, double amount, AccountList* accounts, TransactionQueue* queue, const char* filename);
 void executeTransaction(TransactionQueue* queue, AccountList* accounts, const char* filename);
+void viewTransactions(TransactionQueue* queue);
 
 void loadUsersFromFile(HashMap* map, UserList* users, const char* filename);
 void loadAccountsFromFile(AccountList* accounts, const char* filename);
